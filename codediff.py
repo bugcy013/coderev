@@ -32,6 +32,9 @@ _global_dir_ignore_list = (
     r'^\.svn$',
     r'^\.repo$',
     r'^\.git$',
+    r'^\.idea$',
+    r'^\cmake-build-debug$',
+    r'^\CMakeFiles$',
 )
 
 _global_file_ignore_list = (
@@ -45,6 +48,7 @@ _global_file_ignore_list = (
 
 textchars = ''.join(map(chr, [7,8,9,10,12,13,27] + range(0x20, 0x100)))
 is_binary_string = lambda bytes: bool(bytes.translate(None, textchars))
+
 
 def make_title(pathname, width):
     'Wrap long pathname to abbreviate name to fit the text width'
@@ -544,7 +548,7 @@ class CodeDiffer:
         self.__file_list.sort()
 
         for f in self.__file_list:
-            f_url = urllib.quote(f)
+            f_url = urllib.quote(f.replace('\\', '/'))
             # set default values
             from_lines = ''
             to_lines = ''
